@@ -99,8 +99,13 @@ function deletePost(req, res, next) {
 }
 
 function editPost(req, res, next) {
+	let targetID = parseInt(req.params.id) + 1;
+	if (targetID < 2) {
+		targetID = 2;
+	}
+
 	db.none('UPDATE tweed SET username = $1, tweed_content = $2 WHERE tweed_id = $3',
-		[req.body.username, req.body.tweed_content, parseInt(req.body.tweed_id)])
+		[req.body.username, req.body.tweed_content, targetID])
 	.then(function() {
       res.status(200)
         .json({
