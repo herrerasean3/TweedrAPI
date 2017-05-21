@@ -18,6 +18,9 @@ function readAllPosts(req, res, next) {
 
 function getPostReplies(req, res, next) {
 	let targetID = parseInt(req.params.id) + 1;
+	if (targetID < 2) {
+		targetID = 2;
+	}
 
 	db.task(t => {
 		return t.batch([
@@ -57,6 +60,9 @@ function submitPost(req, res, next) {
 function submitReply(req, res, next) {
 	console.log(req.body)
 	let targetID = parseInt(req.params.id) + 1;
+	if (targetID < 2) {
+		targetID = 2;
+	}
 
 	db.none('INSERT INTO tweed(username,tweed_content,tweed_timestamp,reply_id)' + 
 		'values(${username}, ${tweed_content}, CURRENT_TIMESTAMP,' + `${targetID})`,
@@ -75,6 +81,9 @@ function submitReply(req, res, next) {
 
 function deletePost(req, res, next) {
 	let targetID = parseInt(req.params.id) + 1;
+	if (targetID < 2) {
+		targetID = 2;
+	}
 
 	db.result('DELETE FROM tweed WHERE tweed_id = $1', targetID)
 	.then(function(result) {
