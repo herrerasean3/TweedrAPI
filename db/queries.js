@@ -89,7 +89,7 @@ function deletePost(req, res, next) {
     });
 }
 
-function editPost(req, res next) {
+function editPost(req, res, next) {
 	db.none('UPDATE tweed SET username = $1, tweed_content = $2 WHERE tweed_id = $3',
 		[req.body.username, req.body.tweed_content, parseInt(req.body.tweed_id)])
 	.then(function() {
@@ -102,7 +102,6 @@ function editPost(req, res next) {
     .catch(function(err) {
       return next(err);
     });
-}
 }
 
 module.exports = {
