@@ -3,7 +3,7 @@ let connString = process.env.DATABASE_URL;
 let db = pgp(connString);
 
 function readAllPosts(req, res, next) {
-	db.any('SELECT * FROM tweed WHERE tweed_id > 1 ORDER BY tweed_id DESC')
+	db.any('SELECT * FROM tweed WHERE tweed_id > 1 ORDER BY tweed_timestamp DESC, tweed_id DESC')
 		.then(function(data) {
 			res.status(200)
 			.json({
@@ -22,7 +22,7 @@ function getPostReplies(req, res, next) {
 	db.task(t => {
 		return t.batch([
 			t.one('SELECT * FROM tweed WHERE tweed_id = $1', targetID),
-			t.any('SELECT * FROM tweed WHERE reply_id = $1 AND tweed_id > 1 ORDER BY tweed_timestamp DESC', targetID)
+			t.any('SELECT * FROM tweed WHERE reply_id = $1 AND tweed_id > 1 ORDER BY tweed_timestamp DESC, tweed_id DESC', targetID)
 			]);
 	})
 	.then(data => {
